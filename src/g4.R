@@ -8,12 +8,13 @@ library(tibble)  # column_to_rownames
 #OUT_DIR <- '../images/
 
 #NAME <- 'H3K36me3_HCT116.ENCFF108HPY.hg19'#2100
-NAME <- 'H3K36me3_HCT116.ENCFF506OSH.hg19' #1625
+#NAME <- 'H3K36me3_HCT116.ENCFF506OSH.hg19' #1625
 #NAME <- 'G4.hg19'
+NAME <- 'H3K36me3_HCT116.intersect_with_G4'
 OUT_DIR <- 'C:/Users/olgal/Desktop/project/Results/'
 
 
-#ГИСТОГРАММЫ ДЛИН УЧАСТКОВ
+#Р“РРЎРўРћР“Р РђРњРњР« Р”Р›РРќ РЈР§РђРЎРўРљРћР’
 
 bed_df <- read.delim(paste0('data/', NAME, '.bed'), as.is = TRUE, header = FALSE)
 colnames(bed_df) <- c('chrom', 'start', 'end', 'name', 'score')
@@ -30,16 +31,16 @@ ggplot(bed_df) +
 ggsave(paste0('len_hist.', NAME, '.pdf'), path = OUT_DIR)
 
 
-#ОБРЕЗКА ДЛИННЫХ УЧАСТКОВ
+#РћР‘Р Р•Р—РљРђ Р”Р›РРќРќР«РҐ РЈР§РђРЎРўРљРћР’
 
 bed_df <- read.delim(paste0('data/', NAME, '.bed'), as.is = TRUE, header = FALSE)
-colnames(bed_df) <- c('chrom', 'start', 'end', 'name', 'score')
+colnames(bed_df) <- c('chrom', 'start', 'end')
 bed_df$len <- bed_df$end - bed_df$start
 head(bed_df)
 
 bed_df <- bed_df %>%
   arrange(-len) %>%
-  filter(len < 4000)
+  filter(len < 10000)
 
 ggplot(bed_df) +
   aes(x = len) +
